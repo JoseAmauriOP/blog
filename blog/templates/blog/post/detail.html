@@ -1,0 +1,34 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg p-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4 leading-tight">{{ post.title }}</h1>
+    <p class="text-sm text-gray-500 mb-8 border-b pb-4 flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        Publicado em {{ post.publish|date:"d de F de Y" }} por <span class="font-medium text-gray-700 ml-1">{{
+            post.author }}</span>
+    </p>
+
+    <div class="post-body text-gray-800 leading-relaxed space-y-4 text-justify text-lg">
+        {{ post.body|linebreaks }}
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-gray-100">
+        <a href="{% url 'blog:post_list' %}"
+            class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 group">
+            <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                </path>
+            </svg>
+            Voltar para a lista
+        </a>
+    </div>
+</div>
+{% endblock %}

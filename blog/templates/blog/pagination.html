@@ -1,0 +1,24 @@
+<div class="pagination mt-8 flex justify-center">
+    <span class="step-links flex items-center space-x-2 bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+        {% if page.has_previous %}
+        <a href="?page=1"
+            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm transition-colors border border-gray-300">&laquo;
+            primeira</a>
+        <a href="?page={{ page.previous_page_number }}"
+            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm transition-colors border border-gray-300">anterior</a>
+        {% endif %}
+
+        <span class="current text-gray-600 font-medium px-2 text-sm">
+            Página {{ page.number }} de {{ page.paginator.num_pages }}
+        </span>
+
+        {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}"
+            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm transition-colors border border-gray-300">próxima
+            &raquo;</a>
+        <a href="?page={{ page.paginator.num_pages }}"
+            class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-sm transition-colors border border-gray-300">última
+            &raquo;</a>
+        {% endif %}
+    </span>
+</div>

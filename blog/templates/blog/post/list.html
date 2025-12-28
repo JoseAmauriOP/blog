@@ -1,0 +1,41 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Meus Posts{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold text-gray-900 mb-8 border-b-2 border-blue-500 pb-2 inline-block">Posts Recentes</h1>
+
+<div class="space-y-8">
+    {% for post in posts %}
+    <article
+        class="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+            <a href="{{ post.get_absolute_url }}" class="hover:text-blue-600 transition-colors">
+                {{ post.title }}
+            </a>
+        </h2>
+        <p class="text-sm text-gray-500 mb-4 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            Pub. em {{ post.publish|date:"d/m/Y" }} por  <span class="font-medium text-gray-700 ml-1">{{ post.author}}</span>
+        </p>
+        <div class="text-gray-700 leading-relaxed mb-4">
+            {{ post.body|truncatewords:30|linebreaks }}
+        </div>
+        <a href="{{ post.get_absolute_url }}"
+            class="inline-block text-blue-500 hover:text-blue-700 font-medium text-sm hover:underline">
+            Ler mais &rarr;
+        </a>
+    </article>
+    {% empty %}
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+        <p class="text-yellow-700">Ainda não há posts publicados.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% include "blog/pagination.html" with page=page_obj %}
+{% endblock %}
