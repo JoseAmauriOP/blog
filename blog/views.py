@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from .models import Post
 from django.shortcuts import get_object_or_404, render
+from .forms import CommentForms
 
 class PostListView(ListView):
     queryset = Post.objects.filter(status=Post.Status.PUBLISHED)
@@ -16,4 +17,21 @@ def post_detail(request, year, month, day, post):
                              publish__month=month,
                              publish__year=year
                              )
-    return render(request, 'blog/post/detail.html', {'post': post})
+    comments = post.comments.filter(activate=True)
+    new_comment = None
+
+    if request.method == 'POST':
+        form = CommentForms(data=request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.post = post
+            new_comment.save
+    else:
+        form = CommentForms()
+
+    return render(request, 'blog/post/detail.html', {
+        'post': post,
+        'comments': comments,
+        'nex_comment':new_comment,
+        'form': form
+        })
