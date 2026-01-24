@@ -25,13 +25,13 @@ def post_detail(request, year, month, day, post):
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.post = post
-            new_comment.save
+            new_comment.save()
     else:
         form = CommentForms()
 
     return render(request, 'blog/post/detail.html', {
         'post': post,
         'comments': comments,
-        'nex_comment':new_comment,
+        'new_comment':new_comment,
         'form': form
         })
