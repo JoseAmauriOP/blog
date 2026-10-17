@@ -1,83 +1,74 @@
-# Django Blog Project
+# Blog em Django
 
-Este é um projeto de um sistema de blog completo desenvolvido utilizando o framework **Django**.
+Blog feito com **Django**: lista de posts publicados com paginação, página de leitura de cada post e comentários dos leitores. Os posts e a moderação dos comentários ficam no painel administrativo.
 
-## 📋 Funcionalidades
+![Lista de posts](docs/lista.png)
+![Página de post](docs/post.png)
 
-- **Listagem de Posts**: Exibição de todos os posts publicados em ordem cronológica.
-- **Leitura Detalhada**: Página dedicada para leitura completa de cada artigo.
-- **Sistema de Comentários**: Usuários podem deixar comentários nos posts.
-- **Status de Publicação**: Controle de posts como "Rascunho" (Draft) ou "Publicado" (Published).
-- **URLs Amigáveis**: Slugs personalizados para cada postagem baseados na data de publicação.
+## Funcionalidades
 
-## 🛠️ Tecnologias Utilizadas
+- **Lista de posts publicados**, do mais recente para o mais antigo, com paginação de 3 em 3
+- **Página de leitura** de cada post, com URL amigável baseada na data e no slug (`/blog/17/10/2026/meu-post/`)
+- **Rascunho e publicado**: só os posts publicados aparecem no site
+- **Comentários**: o leitor envia nome, e-mail e mensagem pelo formulário do post
+- **Moderação no admin**: ações para ativar ou desativar vários comentários de uma vez; só os ativos aparecem no post
+- **Admin configurado** com filtros, busca, hierarquia por data e slug preenchido a partir do título
 
-- **Python** (3.x)
-- **Django** (6.0)
-- **SQLite** (Banco de dados padrão)
-- **HTML/CSS** (Templates e estilização)
+## Tecnologias
 
-## 🚀 Como Executar o Projeto
+- Python 3.12+
+- Django 6.0
+- SQLite
+- Tailwind CSS nos templates
 
-Siga os passos abaixo para rodar o projeto em seu ambiente local.
+## Como rodar
 
-### Pré-requisitos
+```bash
+git clone https://github.com/JoseAmauriOP/blog.git
+cd blog
 
-Certifique-se de ter o **Python** instalado em sua máquina.
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 
-### Instalação
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser  # para escrever posts pelo admin
+python manage.py runserver
+```
 
-1. **Clone o repositório**
-   ```bash
-   git clone https://github.com/JoseAmauriOP/blog.git
-   cd blog
-   ```
+- Blog: `http://127.0.0.1:8000/blog/`
+- Admin: `http://127.0.0.1:8000/admin/`
 
-2. **Crie e ative um ambiente virtual**
-   ```bash
-   # Linux/macOS
-   python3 -m venv .venv
-   source .venv/bin/activate
+Crie um post pelo admin com status **Published** para ele aparecer no blog.
 
-   # Windows
-   python -m venv .venv
-   .venv\Scripts\activate
-   ```
+## Como o projeto está organizado
 
-3. **Instale as dependências**
-   ```bash
-   pip install -r requirements.txt
-   ```
+```
+blog/
+├── config/            # configurações do projeto Django
+└── blog/              # app do blog
+    ├── models.py      # Post (com status) e Comment
+    ├── views.py       # PostListView (paginada) e post_detail (com comentários)
+    ├── forms.py       # formulário de comentário (ModelForm)
+    ├── admin.py       # admin personalizado e ações de moderação
+    └── templates/blog/
+```
 
-4. **Realize as migrações do banco de dados**
-   ```bash
-   python manage.py migrate
-   ```
+## O que aprendi
 
-5. **Crie um superusuário (Opcional - para acessar o admin)**
-   ```bash
-   python manage.py createsuperuser
-   ```
+- Modelar relacionamentos com `ForeignKey` (post → autor, comentário → post) e usar `related_name`
+- Usar `TextChoices` para controlar o status do post
+- Criar URLs amigáveis com slug e data, e gerar links com `get_absolute_url`
+- Usar uma view baseada em classe (`ListView`) com paginação
+- Salvar o formulário com `commit=False` para ligar o comentário ao post antes de gravar
+- Personalizar o Django Admin com filtros, busca e ações em lote
 
-6. **Inicie o servidor de desenvolvimento**
-   ```bash
-   python manage.py runserver
-   ```
+## Próximos passos
 
-7. **Acesse o projeto**
-   - Abra o navegador e vá para: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-   - Para acessar a área administativa: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
-
-## 📂 Estrutura do Projeto
-
-- **blog/**: Aplicação principal contendo models, views e templates.
-- **config/**: Configurações globais do projeto Django.
-- **manage.py**: Utilitário de linha de comando do Django.
-- **db.sqlite3**: Banco de dados local.
-
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
+- [ ] Testes automatizados
+- [ ] Busca de posts por texto
+- [ ] Tags para organizar os posts
 
 ---
-Desenvolvido por José Amauri
+
+Desenvolvido por [José Amauri Patrício](https://www.linkedin.com/in/amauri-patricio-5a121435b)
